@@ -12,7 +12,7 @@ import com.example.pokemonreview.R;
 import java.util.ArrayList;
 import java.util.List;
 
-import domain.Pokemon;
+import domain.model.Pokemon;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
     private List<Pokemon> data = new ArrayList<>();

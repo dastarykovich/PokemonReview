@@ -1,4 +1,4 @@
-package domain;
+package domain.model;
 
 public class Pokemon {
     private String name;
@@ -6,6 +6,11 @@ public class Pokemon {
 
     public String getName() {
         return name;
+    }
+
+    public Pokemon(String name, String url) {
+        this.name = name;
+        this.url = url;
     }
 
     public void setName(String name) {

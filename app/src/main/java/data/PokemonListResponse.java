@@ -2,7 +2,7 @@ package data;
 
 import java.util.List;
 
-import domain.Pokemon;
+import domain.model.Pokemon;
 
 public class PokemonListResponse {
     private List<Pokemon> results;
