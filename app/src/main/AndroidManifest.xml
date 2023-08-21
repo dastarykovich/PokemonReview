@@ -15,7 +15,7 @@
         android:theme="@style/Theme.PokemonReview"
         tools:targetApi="31">
         <activity
-            android:name="presentation.PokemonActivity"
+            android:name="presentation.View.PokemonActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

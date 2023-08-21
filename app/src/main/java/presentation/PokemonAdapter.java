@@ -23,6 +23,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    public void addData(List<Pokemon> newData) {
+        int startPosition = data.size();
+        data.addAll(newData);
+        notifyItemRangeInserted(startPosition, newData.size());
+    }
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.itempokemon, parent, false);
