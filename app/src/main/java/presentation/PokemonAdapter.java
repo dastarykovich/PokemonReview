@@ -15,11 +15,19 @@ import java.util.List;
 import domain.model.Pokemon;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHolder> {
+    public interface OnItemClickListener {
+        void onItemClick(Pokemon pokemon);
+    }
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
+    }
+
     private List<Pokemon> data = new ArrayList<>();
 
     public void setData(List<Pokemon> newData) {
-        data.clear();
-        data.addAll(newData);
+        data.addAll(newData); // Просто добавляем новые данные в конец списка
         notifyDataSetChanged();
     }
 
@@ -39,6 +47,14 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
         Pokemon pokemon = data.get(position);
         holder.nameTextView.setText(pokemon.getName());
         holder.urlTextView.setText(pokemon.getUrl());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(pokemon);
+                }
+            }
+        });
     }
 
     @Override

@@ -2,7 +2,7 @@ package domain.usecase;
 import java.util.List;
 
 import data.PokemonApiService;
-import data.PokemonListResponse;
+import data.model.PokemonListResponse;
 import domain.model.Pokemon;
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,5 +1,6 @@
 package data;
 
+import domain.usecase.PokemonDetailInteractor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -14,4 +15,14 @@ public class RetrofitClient {
 
         return retrofit.create(PokemonApiService.class);
     }
+    public static PokemonDetailApiService createDetail() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(PokemonDetailApiService.class);
+    }
+
+
 }
