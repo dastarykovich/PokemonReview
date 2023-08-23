@@ -58,9 +58,7 @@ public class PokemonInteractorImpl implements PokemonInteractor {
                                 }
                                 appDatabase.pokemonDao().insertAllPokemon(pokemonEntities);
                                 handler.post(() -> callback.onSuccess(newPokemonList));
-                                Log.d("Insert", "Number of items to insert: " + newPokemonList.size());
-                                Log.d("Insert", "Number pokemonEntities " + pokemonEntities.size());
-                            });
+                               });
                         } else {
                             handler.post(() -> callback.onFailure(new Exception("Response not successful")));
                         }

@@ -28,7 +28,7 @@ public class PokemonDetailActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_pokemon_detail);
 
-            detailInteractor = new PokemonDetailInteractorImpl(RetrofitClient.createDetail());
+            detailInteractor = new PokemonDetailInteractorImpl(RetrofitClient.createDetail(),this);
 
             setupBackButton();
             loadPokemonDetailFromIntent();
