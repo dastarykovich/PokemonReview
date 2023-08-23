@@ -77,7 +77,7 @@ public class PokemonDetailEntity {
         pokemonDetail.setFrontDefault(frontDefault);
 
         List<PokemonDetail.PokemonType> typeList = new ArrayList<>();
-
+        typeList=pokemonDetail.parseFormattedTypes(types);
         pokemonDetail.setTypes(typeList);
 
         return pokemonDetail;
@@ -90,7 +90,10 @@ public class PokemonDetailEntity {
         entity.setHeight(pokemonDetail.getHeight());
         entity.setWeight(pokemonDetail.getWeight());
         entity.setFrontDefault(pokemonDetail.getFrontDefault());
+        entity.setTypes(pokemonDetail.getFormattedTypes());
+
 
         return entity;
     }
+
 }

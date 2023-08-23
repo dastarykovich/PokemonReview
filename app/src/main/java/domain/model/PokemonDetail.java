@@ -57,6 +57,18 @@ public class PokemonDetail {
         }
         return TextUtils.join(", ", typeNames);
     }
+    public List<PokemonType> parseFormattedTypes(String formattedTypes) {
+        List<PokemonType> parsedTypes = new ArrayList<>();
+        String[] typeNames = formattedTypes.split(", ");
+        for (String typeName : typeNames) {
+            Type type = new Type();
+            type.setName(typeName);
+            PokemonType pokemonType = new PokemonType();
+            pokemonType.setType(type);
+            parsedTypes.add(pokemonType);
+        }
+        return parsedTypes;
+    }
 
     public void setTypes(List<PokemonType> types) {
         this.types = types;
@@ -68,6 +80,10 @@ public class PokemonDetail {
         public Type getType() {
             return type;
         }
+
+        public void setType(Type type) {
+            this.type=type;
+        }
     }
 
     public class Type {
@@ -76,6 +92,10 @@ public class PokemonDetail {
 
         public String getName() {
             return name;
+        }
+
+        public void setName(String typeName) {
+            this.name=typeName;
         }
     }
 
