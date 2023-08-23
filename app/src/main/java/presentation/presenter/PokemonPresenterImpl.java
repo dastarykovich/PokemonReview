@@ -18,6 +18,7 @@ import java.util.List;
 public class PokemonPresenterImpl implements PokemonPresenter {
 
     private int offset = 0;
+
     private int limit=20;
     private PokemonInteractor interactor;
     private PokemonDetailView view;

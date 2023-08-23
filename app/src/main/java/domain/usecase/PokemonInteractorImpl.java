@@ -1,5 +1,8 @@
 package domain.usecase;
+
 import android.content.Context;
+import android.os.Handler;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,51 +21,58 @@ import retrofit2.Response;
 public class PokemonInteractorImpl implements PokemonInteractor {
     private PokemonApiService apiService;
     private AppDatabase appDatabase;
+    private Executor executor;
+    private Handler handler;
 
-
-    public PokemonInteractorImpl(PokemonApiService apiService,/*fff*/Context context) {
+    public PokemonInteractorImpl(PokemonApiService apiService, Context context) {
         this.apiService = apiService;
-        ///
         this.appDatabase = AppDatabase.getInstance(context);
-
-
-        ///
+        this.executor = Executors.newSingleThreadExecutor();
+        this.handler = new Handler();
     }
-
-    Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     public void fetchPokemonList(int offset, int limit, PokemonFetchCallback callback) {
-        Call<PokemonListResponse> call = apiService.getPokemonList(offset, limit);
+        executor.execute(() -> {
+            List<PokemonEntity> cachedPokemonEntities = appDatabase.pokemonDao().getAllPokemon();
 
-
-        call.enqueue(new Callback<PokemonListResponse>() {
-            @Override
-            public void onResponse(Call<PokemonListResponse> call, Response<PokemonListResponse> response) {
-                if (response.isSuccessful()) {
-                    List<Pokemon> newPokemonList = response.body().getResults();
-
-
-                    executor.execute(() -> {
-                        List<PokemonEntity> pokemonEntities = new ArrayList<>();
-                        for (Pokemon pokemon : newPokemonList) {
-                            pokemonEntities.add(PokemonEntity.fromDomainModel(pokemon));
-                        }
-                        appDatabase.pokemonDao().insertAllPokemon(pokemonEntities);
-
-                        callback.onSuccess(newPokemonList);
-                    });
-                } else {
-                    callback.onFailure(new Exception("Response not successful"));
+            if (!cachedPokemonEntities.isEmpty()&&cachedPokemonEntities.size() >offset) {
+                List<Pokemon> cachedPokemonList = new ArrayList<>();
+                for (PokemonEntity entity : cachedPokemonEntities) {
+                    cachedPokemonList.add(entity.toDomainModel());
                 }
-            }
 
+                handler.post(() -> callback.onSuccess(cachedPokemonList));
+            } else {
+                Call<PokemonListResponse> call = apiService.getPokemonList(offset, limit);
+                call.enqueue(new Callback<PokemonListResponse>() {
+                    @Override
+                    public void onResponse(Call<PokemonListResponse> call, Response<PokemonListResponse> response) {
+                        if (response.isSuccessful()) {
+                            List<Pokemon> newPokemonList = response.body().getResults();
+                            executor.execute(() -> {
+                                List<PokemonEntity> pokemonEntities = new ArrayList<>();
+                                int count =offset;
+                                for (Pokemon pokemon : newPokemonList) {
+                                    pokemonEntities.add(PokemonEntity.fromDomainModel(pokemon,count++));
+                                }
+                                appDatabase.pokemonDao().insertAllPokemon(pokemonEntities);
+                                handler.post(() -> callback.onSuccess(newPokemonList));
+                                Log.d("Insert", "Number of items to insert: " + newPokemonList.size());
+                                Log.d("Insert", "Number pokemonEntities " + pokemonEntities.size());
+                            });
+                        } else {
+                            handler.post(() -> callback.onFailure(new Exception("Response not successful")));
+                        }
+                    }
 
-            @Override
-            public void onFailure(Call<PokemonListResponse> call, Throwable t) {
-                callback.onFailure(t);
+                    @Override
+                    public void onFailure(Call<PokemonListResponse> call, Throwable t) {
+                        handler.post(() -> callback.onFailure(t));
+                    }
+                });
             }
         });
     }
-}
 
+}

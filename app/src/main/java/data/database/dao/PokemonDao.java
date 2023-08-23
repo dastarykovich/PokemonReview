@@ -19,4 +19,6 @@ public interface PokemonDao {
 
     @Query("SELECT * FROM pokemon")
     List<PokemonEntity> getAllPokemon();
+    @Query("DELETE FROM pokemon")
+    void deleteAll();
 }
