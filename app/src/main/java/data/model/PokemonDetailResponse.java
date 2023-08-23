@@ -18,6 +18,8 @@ public class PokemonDetailResponse {
 
     @SerializedName("types")
     private List<PokemonDetail.PokemonType> types;
+    @SerializedName("sprites")
+    private Sprites sprites;
 
     public String getName() {
         return name;
@@ -25,6 +27,19 @@ public class PokemonDetailResponse {
 
     public List<PokemonDetail.PokemonType> getTypes() {
         return types;
+    }
+
+    public Sprites getSprites() {
+        return sprites;
+    }
+
+    public static class Sprites {
+        @SerializedName("front_default")
+        private String frontDefaultUrl;
+
+        public String getFrontDefaultUrl() {
+            return frontDefaultUrl;
+        }
     }
 
     public double getHeight() {

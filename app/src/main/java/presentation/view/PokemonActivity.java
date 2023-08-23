@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.pokemonreview.R;
-
 import java.util.List;
 import domain.model.Pokemon;
 import presentation.PokemonAdapter;
@@ -52,13 +51,12 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-                // Загружаем следующую порцию данных только при достижении конца списка
                 if (
                         (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
                         && firstVisibleItemPosition >= 0
                         && totalItemCount - 1 <= (firstVisibleItemPosition + visibleItemCount)) {
 
-                    presenter.fetchPokemonList(); // Вызываем загрузку следующей порции данных
+                    presenter.fetchPokemonList();
                 }
             }
         });
@@ -79,7 +77,7 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
 
     @Override
     public void showLoading(boolean isLoading)  {
-        ProgressBar progressBar = findViewById(R.id.progressBar); // Пример: используйте свой элемент ProgressBar
+        ProgressBar progressBar = findViewById(R.id.progressBar);
         if (isLoading) {
             progressBar.setVisibility(View.VISIBLE);
         } else {
@@ -89,6 +87,7 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
 
     @Override
     public void showError(String errorMessage) {
-        // Show error message
+
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
     }
 }

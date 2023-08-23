@@ -31,6 +31,7 @@ public class PokemonDetailInteractorImpl implements PokemonDetailInteractor {
                     pokemonDetail.setHeight(detailResponse.getHeight());
                     pokemonDetail.setWeight(detailResponse.getWeight());
                     pokemonDetail.setTypes(detailResponse.getTypes());
+                    pokemonDetail.setFrontDefault(detailResponse.getSprites().getFrontDefaultUrl());
                     // Заполняем другие поля PokemonDetail в зависимости от данных
 
                     callback.onSuccess(pokemonDetail); // Передаем объект PokemonDetail через callback

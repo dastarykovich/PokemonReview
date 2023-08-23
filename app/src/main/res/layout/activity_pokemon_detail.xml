@@ -7,7 +7,12 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context="presentation.view.PokemonDetailActivity">
-
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_gravity="center"
+        android:layout_height="100dp"
+        android:id="@+id/imageView"
+        />
     <TextView
         android:id="@+id/nameTextView"
         android:layout_width="wrap_content"

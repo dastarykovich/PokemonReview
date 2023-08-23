@@ -37,7 +37,7 @@ public class PokemonPresenterImpl implements PokemonPresenter {
         interactor.fetchPokemonList(offset, limit, new PokemonFetchCallback() {
             @Override
             public void onSuccess(List<Pokemon> newPokemonList) {
-                isFetching = false; // Set isLoading back to false after loading
+                isFetching = false;
                 view.showLoading(false);
                 view.showPokemonList(newPokemonList);
                 offset += newPokemonList.size();
@@ -45,7 +45,7 @@ public class PokemonPresenterImpl implements PokemonPresenter {
 
             @Override
             public void onFailure(Throwable throwable) {
-                isFetching = false; // Set isLoading back to false on failure
+                isFetching = false;
                 view.showLoading(false);
                 view.showError("Failed to fetch data");
             }

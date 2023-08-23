@@ -1,13 +1,17 @@
 package presentation.view;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.pokemonreview.R;
+import com.squareup.picasso.Picasso;
 
 import data.RetrofitClient;
 import domain.model.PokemonDetail;
@@ -26,23 +30,25 @@ public class PokemonDetailActivity extends AppCompatActivity {
 
             detailInteractor = new PokemonDetailInteractorImpl(RetrofitClient.createDetail());
 
-
-            String pokemonUrl = getIntent().getStringExtra("pokemon_id");
-            Button backButton = findViewById(R.id.backButton);
-            backButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                }
-            });
-            String[] urlParts = pokemonUrl.split("/");
-            String pokemonIdString = urlParts[urlParts.length - 1];
-
-            int pokemonId= Integer.parseInt(pokemonIdString);
-
-            loadPokemonDetail(pokemonId);
+            setupBackButton();
+            loadPokemonDetailFromIntent();
         }
-
+    private void setupBackButton() {
+        Button backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
+    private void loadPokemonDetailFromIntent() {
+        String pokemonUrl = getIntent().getStringExtra("pokemon_id");
+        String[] urlParts = pokemonUrl.split("/");
+        String pokemonIdString = urlParts[urlParts.length - 1];
+        int pokemonId = Integer.parseInt(pokemonIdString);
+        loadPokemonDetail(pokemonId);
+    }
     private void loadPokemonDetail(int pokemonId) {
         detailInteractor.fetchPokemonDetail(pokemonId, new PokemonDetailCallback() {
             @Override
@@ -53,12 +59,14 @@ public class PokemonDetailActivity extends AppCompatActivity {
                 TextView heightTextView = findViewById(R.id.heightTextView);
                 TextView weightTextView = findViewById(R.id.weightTextView);
                 TextView typesTextView = findViewById(R.id.typesTextView);
+                ImageView imageView = findViewById(R.id.imageView);
 
                 nameTextView.setText(pokemonDetail.getName());
                 heightTextView.setText("Height: " + pokemonDetail.getHeight() + " m");
                 weightTextView.setText("Weight: " + pokemonDetail.getWeight() + " kg");
                 String formattedTypes = pokemonDetail.getFormattedTypes();
                 typesTextView.setText("Types: " + formattedTypes);
+                Picasso.get().load(pokemonDetail.getFrontDefault()).into(imageView);
 
 
 
@@ -66,7 +74,10 @@ public class PokemonDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable throwable) {
-                // Обработка ошибки
+                Log.e("PokemonDetailActivity", "Error loading Pokemon details", throwable);
+                Toast.makeText(PokemonDetailActivity.this, "Error loading Pokemon details", Toast.LENGTH_SHORT).show();
+
+
             }
         });
     }

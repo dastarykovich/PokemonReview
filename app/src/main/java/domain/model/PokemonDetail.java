@@ -10,6 +10,15 @@ public class PokemonDetail {
     private double height;
     private double weight;
     private List<PokemonType> types;
+    private String frontDefault;
+
+    public String getFrontDefault() {
+        return frontDefault;
+    }
+
+    public void setFrontDefault(String frontDefault) {
+        this.frontDefault = frontDefault;
+    }
 
     public String getName() {
         return name;
@@ -51,12 +60,6 @@ public class PokemonDetail {
 
     public void setTypes(List<PokemonType> types) {
         this.types = types;
-    }
-
-    public PokemonDetail(String name, double height, double weight) {
-        this.name = name;
-        this.height = height;
-        this.weight = weight;
     }
     public class PokemonType {
         private int slot;

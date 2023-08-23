@@ -27,7 +27,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     private List<Pokemon> data = new ArrayList<>();
 
     public void setData(List<Pokemon> newData) {
-        data.addAll(newData); // Просто добавляем новые данные в конец списка
+        data.addAll(newData);
         notifyDataSetChanged();
     }
 
@@ -46,7 +46,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Pokemon pokemon = data.get(position);
         holder.nameTextView.setText(pokemon.getName());
-        holder.urlTextView.setText(pokemon.getUrl());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,12 +63,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameTextView;
-        TextView urlTextView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.name);
-            urlTextView=itemView.findViewById(R.id.url);
         }
     }
 }
