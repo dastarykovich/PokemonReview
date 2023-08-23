@@ -50,5 +50,4 @@ public class PokemonDetailResponse {
         return weight;
     }
 
-    // ... остальные геттеры для остальных полей ...
 }

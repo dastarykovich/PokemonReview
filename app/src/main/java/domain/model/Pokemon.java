@@ -4,6 +4,10 @@ public class Pokemon {
     private String name;
     private String url;
 
+    public Pokemon() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -24,5 +28,4 @@ public class Pokemon {
     public void setUrl(String url) {
         this.url = url;
     }
-// Getters and setters
 }

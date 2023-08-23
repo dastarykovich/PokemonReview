@@ -25,24 +25,22 @@ public class PokemonDetailInteractorImpl implements PokemonDetailInteractor {
                 if (response.isSuccessful()) {
                     PokemonDetailResponse detailResponse = response.body();
 
-                    // Создаем объект PokemonDetail из данных detailResponse
                     PokemonDetail pokemonDetail = new PokemonDetail();
                     pokemonDetail.setName(detailResponse.getName());
                     pokemonDetail.setHeight(detailResponse.getHeight());
                     pokemonDetail.setWeight(detailResponse.getWeight());
                     pokemonDetail.setTypes(detailResponse.getTypes());
                     pokemonDetail.setFrontDefault(detailResponse.getSprites().getFrontDefaultUrl());
-                    // Заполняем другие поля PokemonDetail в зависимости от данных
 
-                    callback.onSuccess(pokemonDetail); // Передаем объект PokemonDetail через callback
+                    callback.onSuccess(pokemonDetail);
                 } else {
-                    callback.onFailure(new Exception("Response not successful")); // Handle error
+                    callback.onFailure(new Exception("Response not successful"));
                 }
             }
 
             @Override
             public void onFailure(Call<PokemonDetailResponse> call, Throwable t) {
-                callback.onFailure(t); // Handle failure
+                callback.onFailure(t);
             }
         });
     }

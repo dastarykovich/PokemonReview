@@ -1,12 +1,17 @@
 package presentation.presenter;
 
 
+import android.content.Context;
+
 import data.RetrofitClient;
+import data.database.AppDatabase;
 import domain.model.Pokemon;
 import domain.usecase.PokemonFetchCallback;
 import domain.usecase.PokemonInteractor;
 import domain.usecase.PokemonInteractorImpl;
 import presentation.view.PokemonDetailView;
+import kotlinx.coroutines.GlobalScope;
+
 
 import java.util.List;
 
@@ -19,9 +24,9 @@ public class PokemonPresenterImpl implements PokemonPresenter {
     private boolean isFetching = false;
 
 
-    public PokemonPresenterImpl(PokemonDetailView view) {
+    public PokemonPresenterImpl(PokemonDetailView view, Context context) {
         this.view = view;
-        this.interactor = new PokemonInteractorImpl(RetrofitClient.create());
+        this.interactor = new PokemonInteractorImpl(RetrofitClient.create(), context);
     }
 
 
@@ -31,7 +36,7 @@ public class PokemonPresenterImpl implements PokemonPresenter {
             return;
         }
 
-        isFetching = true; // Set isLoading to true before loading
+        isFetching = true;
         view.showLoading(true);
 
         interactor.fetchPokemonList(offset, limit, new PokemonFetchCallback() {
@@ -41,6 +46,7 @@ public class PokemonPresenterImpl implements PokemonPresenter {
                 view.showLoading(false);
                 view.showPokemonList(newPokemonList);
                 offset += newPokemonList.size();
+
             }
 
             @Override

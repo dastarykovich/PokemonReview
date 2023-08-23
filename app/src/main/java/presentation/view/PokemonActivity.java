@@ -32,7 +32,7 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
         adapter = new PokemonAdapter();
         recyclerView.setAdapter(adapter);
 
-        presenter = new PokemonPresenterImpl(this);
+        presenter = new PokemonPresenterImpl(this, this);
 
         adapter.setOnItemClickListener(new PokemonAdapter.OnItemClickListener() {
             @Override
@@ -53,8 +53,8 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
 
                 if (
                         (visibleItemCount + firstVisibleItemPosition) >= totalItemCount
-                        && firstVisibleItemPosition >= 0
-                        && totalItemCount - 1 <= (firstVisibleItemPosition + visibleItemCount)) {
+                                && firstVisibleItemPosition >= 0
+                                && totalItemCount - 1 <= (firstVisibleItemPosition + visibleItemCount)) {
 
                     presenter.fetchPokemonList();
                 }
@@ -76,13 +76,18 @@ public class PokemonActivity extends AppCompatActivity implements PokemonDetailV
     }
 
     @Override
-    public void showLoading(boolean isLoading)  {
-        ProgressBar progressBar = findViewById(R.id.progressBar);
-        if (isLoading) {
-            progressBar.setVisibility(View.VISIBLE);
-        } else {
-            progressBar.setVisibility(View.GONE);
-        }
+    public void showLoading(boolean isLoading) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ProgressBar progressBar = findViewById(R.id.progressBar);
+                if (isLoading) {
+                    progressBar.setVisibility(View.VISIBLE);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     @Override
